@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 import Post from './Post';
-import { db } from './firebase';
-import { Button, Modal, Input } from '@mui/material';
+import { db, auth } from './firebase';
+import { Button, Modal, Input, Alert } from '@mui/material';
 import { makeStyles } from "@material-ui/core/styles";
 
 
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     width: 400,
     height: 200,
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
+    border: "1px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -37,6 +37,23 @@ function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+   const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        // at this point, the user has logged in
+        console.log(authUser);
+        setUser(authUser);
+      } else {
+        // at this point, the user has logged out
+        setUser(null);
+      }
+    })
+    return () => {
+      unsubscribe();
+    }
+  }, [user, username]);
 
   // useEffect -> Runs a piece of code based on a specific conditions
   useEffect(() => {
@@ -51,7 +68,15 @@ function App() {
   }, []);
 
   const signUp = (event) => {
-
+    event.preventDefault();
+    auth
+    .createUserWithEmailAndPassword(email, password)
+    .then((authUser) => {
+     return authUser.user.updateProfile({
+        displayName: username
+      })
+    })
+    .catch((error) => alert(error.message));
   }
 
   return (
@@ -87,7 +112,7 @@ function App() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <Button onClick={signUp}>Sign Up</Button>
+              <Button type='submit' onClick={signUp}>Sign Up</Button>
          </form>
        </div>
       </Modal>
