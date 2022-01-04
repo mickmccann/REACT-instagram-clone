@@ -60,7 +60,7 @@ function App() {
   // useEffect -> Runs a piece of code based on a specific conditions
   useEffect(() => {
     // where the code runs
-    db.collection('posts').onSnapshot(snapshot => {
+    db.collection('posts').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
     // everytime a new post is added, this code fires
     setPosts(snapshot.docs.map(doc => ({
       id: doc.id, 
