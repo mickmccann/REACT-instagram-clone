@@ -93,13 +93,6 @@ function App() {
 
   return (
     <div className="App">
-
-    {user?.displayName ? (
-      <ImageUpload username={user.displayName} />
-    ): (
-      <h3>Create an account to upload</h3>
-    )}
-
       <Modal
        open={open}
        onClose={() => setOpen(false)}
@@ -168,11 +161,9 @@ function App() {
       <div className='app__header'>
         <img className='app__headerImage'
           src='https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png'
-          alt=''>
-        </img>
-      </div>
-
-    {user ? (
+          alt=''
+        />
+        {user ? (
       <Button onClick={() => auth.signOut()}>Logout</Button>
       ): (
         <div className='app__loginContainer'>
@@ -180,6 +171,8 @@ function App() {
           <Button onClick={() => setOpen(true)}>Sign Up</Button>
         </div>
       )}
+      </div>
+
       <h1>Instagram Clone Built With React!</h1>
 
       {
@@ -188,6 +181,11 @@ function App() {
         ))
       }
 
+      {user?.displayName ? (
+      <ImageUpload username={user.displayName} />
+    ): (
+      <h3>Create an account to upload</h3>
+    )}
     </div>
   );
 }
