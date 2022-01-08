@@ -2,9 +2,10 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import Post from './Post';
 import { db, auth } from './firebase';
-import { Button, Modal, Input, Alert } from '@mui/material';
+import { Button, Modal, Input } from '@mui/material';
 import { makeStyles } from "@material-ui/core/styles";
 import ImageUpload from './ImageUpload';
+import InstagramEmbed from 'react-instagram-embed';
 
 
 function getModalStyle() {
@@ -173,14 +174,31 @@ function App() {
       )}
       </div>
 
-      <h1>Instagram Clone Built With React!</h1>
-
-      {
-        posts.map(({id, post}) => (
-          <Post key={id} username={post.username} caption={post.caption} imageUrl={post.imageUrl}/>
-        ))
-      }
-
+      <div className='app__posts'>
+        <div className='app__postsLeft'>
+        {
+          posts.map(({id, post}) => (
+            <Post key={id} username={post.username} caption={post.caption} imageUrl={post.imageUrl}/>
+          ))
+        }
+        </div>
+      </div>
+      <div className="app__postsRight">
+      <InstagramEmbed
+            url='https://instagr.am/p/Zw9o4/'
+            clientAccessToken='123|456'
+            maxWidth={320}
+            hideCaption={false}
+            containerTagName='div'
+            protocol=''
+            injectScript
+            onLoading={() => {}}
+            onSuccess={() => {}}
+            onAfterRender={() => {}}
+            onFailure={() => {}}
+          />
+        </div>    
+        
       {user?.displayName ? (
       <ImageUpload username={user.displayName} />
     ): (
@@ -189,5 +207,7 @@ function App() {
     </div>
   );
 }
+
+
 
 export default App;
