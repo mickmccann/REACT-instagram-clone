@@ -29,6 +29,10 @@
     padding: 10px;
 }
 
+.post__comments {
+    padding: 20px;
+}
+
 .post__button {
     flex: 0;
     border: none;
